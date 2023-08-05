@@ -22,23 +22,23 @@ jobs:
           java-version: 17
           distribution: 'adopt'
 
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+#      - name: Cache Maven packages
+#        uses: actions/cache@v2
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: ${{ runner.os }}-m2
 
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml -Drevision=${{ env.RELEASE_VERSION }}
+#      - name: Build with Maven
+#        run: mvn -B package --file pom.xml -Drevision=${{ env.RELEASE_VERSION }}
 
       - name: Set GPG_TTY
         run: echo "GPG_TTY=$(tty)" >> $GITHUB_ENV
 
       - name: Configure GPG Key
         run: |
-          mkdir ~/.gnupg/ && echo -e "use-agent\npinentry-mode loopback" > ~/.gnupg/gpg.conf
-          echo -n "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}" | base64 --decode | gpg --import
+          mkdir ~/.gnupg/ && && chmod 600 ~/.gnupg/ && echo -e "use-agent\npinentry-mode loopback" > ~/.gnupg/gpg.conf
+          echo -n "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}" | base64 --decode | gpg --batch --no-tty --import
 
       - name: Deploy to OSSRH and Release to Maven Central
         run: mvn clean deploy -P release -Drevision=${{ env.RELEASE_VERSION }}
