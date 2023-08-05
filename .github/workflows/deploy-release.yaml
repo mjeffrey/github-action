@@ -34,7 +34,7 @@ jobs:
 
       - name: Configure GPG Key
         run: |
-          echo -n "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}" | base64 --decode | gpg --import
+          echo -n "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}" | gpg --import
 
       - name: Deploy to OSSRH and Release to Maven Central
         run: mvn clean deploy -P release -Drevision=${{ env.RELEASE_VERSION }}
