@@ -41,7 +41,7 @@ jobs:
           echo -n "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}" | base64 --decode | gpg --batch --no-tty --import
 
       - name: Deploy to OSSRH and Release to Maven Central
-        run: mvn clean deploy -P release -Drevision=${{ env.RELEASE_VERSION }}
+        run: mvn -B clean deploy -P release -Drevision=${{ env.RELEASE_VERSION }}
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
