@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      artifact_name: chips-n-salsa
+      artifact_name: github-action
 
     steps:
     - uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Publish to Apache Maven Central
-      run: mvn deploy -PossrhDeploy
+      run: mvn -B deploy -PossrhDeploy
       env:
         MAVEN_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
         MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
